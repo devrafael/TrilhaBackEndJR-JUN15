@@ -1,5 +1,6 @@
 package com.cordigocerto.trilhabackend.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,15 @@ public class Tarefa {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    public Tarefa(String tarefaDescricao, Long usuario_id) {
+        this.tarefaDescricao = tarefaDescricao;
+        this.usuario = new Usuario(usuario_id);
+    }
+
+
+
+
 
 
 

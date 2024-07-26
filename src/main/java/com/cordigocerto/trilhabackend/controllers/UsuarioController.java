@@ -1,5 +1,7 @@
 package com.cordigocerto.trilhabackend.controllers;
 
+import com.cordigocerto.trilhabackend.controllers.dtos.requests.UsuarioRequest;
+import com.cordigocerto.trilhabackend.controllers.dtos.responses.UsuarioResponse;
 import com.cordigocerto.trilhabackend.entities.Usuario;
 import com.cordigocerto.trilhabackend.services.UsuarioService;
 import jakarta.transaction.Transactional;
@@ -18,37 +20,37 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping()
+    @GetMapping("/admin")
     public ResponseEntity<List<Usuario>> buscarTodosUsuarios(){
         List<Usuario> listaUsuarios = usuarioService.buscarUsuarios();
-        return ResponseEntity.ok(listaUsuarios);
+        return ResponseEntity.ok().body(listaUsuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id){
+    public ResponseEntity<UsuarioResponse> buscarUsuarioPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.buscarUsuario(id);
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok().body(new UsuarioResponse(usuario.getId(), usuario.getNome(), usuario.getLogin(), usuario.getRole()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id){
         Usuario usuario = usuarioService.buscarUsuario(id);
-        usuarioService.deletarUsuario(usuario);
+        usuarioService.deletarUsuario(usuario.getId());
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/criar")
+    @PostMapping()
     @Transactional
-    public ResponseEntity<Void> criarUsuario(@RequestBody Usuario usuario){
-        Usuario novoUsuario = usuarioService.criarUsuario(usuario);
+    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioRequest usuarioRequest){
+        Usuario novoUsuario = usuarioService.criarUsuario(usuarioRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(novoUsuario.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarUsuario(@RequestBody Usuario usuario, @PathVariable Long id){
-        usuarioService.atualizarUsuario(usuario, id);
+    public ResponseEntity<Void> atualizarUsuario(@RequestBody UsuarioRequest usuarioRequest, @PathVariable Long id){
+        usuarioService.atualizarUsuario(usuarioRequest, id);
         return ResponseEntity.noContent().build();
     }
 

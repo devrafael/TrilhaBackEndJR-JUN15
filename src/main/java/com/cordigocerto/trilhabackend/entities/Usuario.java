@@ -39,6 +39,7 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
     @OneToMany(mappedBy = "usuario")

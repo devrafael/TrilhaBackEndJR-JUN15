@@ -1,6 +1,7 @@
 package com.cordigocerto.trilhabackend.controllers.exceptions;
 
 
+import com.cordigocerto.trilhabackend.services.exceptions.EmptyCredentialsException;
 import com.cordigocerto.trilhabackend.services.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
@@ -68,6 +69,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         pb.setDetail("O servidor não pode processar a solicitação porque o corpo da solicitação é inválido ou malformado.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pb);
 
+    }
+
+    @ExceptionHandler(EmptyCredentialsException.class)
+    protected ResponseEntity<Object> handleEmptyCredentialsException(EmptyCredentialsException ex) {
+        ProblemDetail pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pb.setDetail("Não foi possivel atualizar! Alguma credencial pode estar vazia.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pb);
     }
 
 

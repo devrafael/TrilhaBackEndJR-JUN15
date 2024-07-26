@@ -3,6 +3,7 @@ package com.cordigocerto.trilhabackend.services;
 import com.cordigocerto.trilhabackend.controllers.dtos.requests.UsuarioRequest;
 import com.cordigocerto.trilhabackend.entities.Usuario;
 import com.cordigocerto.trilhabackend.repositories.UsuarioRepository;
+import com.cordigocerto.trilhabackend.services.exceptions.EmptyCredentialsException;
 import com.cordigocerto.trilhabackend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -52,15 +53,16 @@ public class UsuarioService {
         Usuario usuarioAtualizado = buscarUsuario(id);
         var senhaHash = "";
 
-        if (usuarioRequest.nome() == null && usuarioRequest.senha() != null) {
+        if(usuarioRequest.nome() == "" || usuarioRequest.senha() == ""){
+            throw new EmptyCredentialsException("Não foi possivel atualizar! Alguma credencial pode estar vazia.");
+        } else if (usuarioRequest.nome() == null && usuarioRequest.senha() != null) {
             senhaHash = passwordEncoder.encode(usuarioRequest.senha());
             usuarioAtualizado.setNome(usuarioAtualizado.getNome());
             usuarioAtualizado.setSenha(senhaHash);
         } else if (usuarioRequest.nome() != null && usuarioRequest.senha() == null) {
-            passwordEncoder.encode(usuarioAtualizado.getPassword());
             usuarioAtualizado.setSenha(usuarioAtualizado.getSenha());
             usuarioAtualizado.setNome(usuarioRequest.nome());
-        } else if (usuarioRequest.nome() != null && usuarioRequest.senha() != null) {
+        } else if (usuarioRequest.nome() != null) {
             senhaHash = passwordEncoder.encode(usuarioRequest.senha());
             usuarioAtualizado.setNome(usuarioRequest.nome());
             usuarioAtualizado.setSenha(senhaHash);

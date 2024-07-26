@@ -43,12 +43,12 @@ public class TarefaService {
     }
 
     public Tarefa criarTarefa(TarefaRequest tarefaRequest) {
-        return tarefaRepository.save(tarefaRequest.toTarefa());
+        return tarefaRepository.save(new Tarefa(tarefaRequest.tarefaDescricao(), tarefaRequest.usuario_id()));
     }
 
     public Tarefa atualizarTarefa(TarefaRequest tarefaRequest, Long id) {
         Tarefa tarefaAtualizada = buscarTarefa(id);
-        tarefaAtualizada.setTarefaDescricao(tarefaRequest.toTarefa().getTarefaDescricao());
+        tarefaAtualizada.setTarefaDescricao(tarefaRequest.tarefaDescricao());
         tarefaRepository.save(tarefaAtualizada);
         return tarefaAtualizada;
     }

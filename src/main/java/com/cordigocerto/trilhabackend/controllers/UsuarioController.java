@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,9 +22,15 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/admin")
-    public ResponseEntity<List<Usuario>> buscarTodosUsuarios(){
+    public ResponseEntity<List<UsuarioResponse>> buscarTodosUsuarios(){
         List<Usuario> listaUsuarios = usuarioService.buscarUsuarios();
-        return ResponseEntity.ok().body(listaUsuarios);
+        List<UsuarioResponse> listaUsuarioResponses = new ArrayList<>();
+
+        for (Usuario usuario : listaUsuarios) {
+            listaUsuarioResponses.add(new UsuarioResponse(usuario.getId(), usuario.getNome(), usuario.getLogin(), usuario.getRole()));
+        }
+
+        return ResponseEntity.ok().body(listaUsuarioResponses);
     }
 
     @GetMapping("/{id}")

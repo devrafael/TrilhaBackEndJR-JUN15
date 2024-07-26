@@ -1,6 +1,7 @@
 package com.cordigocerto.trilhabackend.controllers.security;
 
 import com.cordigocerto.trilhabackend.controllers.dtos.requests.AutenticacaoRequest;
+import com.cordigocerto.trilhabackend.controllers.dtos.responses.AutenticacaoResponseDTO;
 import com.cordigocerto.trilhabackend.services.security.AutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,13 @@ public class AutenticacaoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> auth(@RequestBody AutenticacaoRequest autenticacaoRequest){
+    public ResponseEntity<AutenticacaoResponseDTO> auth(@RequestBody AutenticacaoRequest autenticacaoRequest){
 
         var usuarioAutenticationToken = new UsernamePasswordAuthenticationToken(autenticacaoRequest.login(), autenticacaoRequest.senha());
         authenticationManager.authenticate(usuarioAutenticationToken);
+        AutenticacaoResponseDTO autenticacaoResponseDTO = new AutenticacaoResponseDTO(autenticacaoService.getToken(autenticacaoRequest), autenticacaoService.getDateExpirationToken());
 
-        return ResponseEntity.ok().body(autenticacaoService.getToken(autenticacaoRequest));
+        return ResponseEntity.ok().body(autenticacaoResponseDTO);
     }
 
 

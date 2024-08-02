@@ -1,6 +1,7 @@
 package com.cordigocerto.trilhabackend.entities;
 
 
+import com.cordigocerto.trilhabackend.controllers.dtos.requests.AutenticacaoRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.*;
@@ -8,13 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_usuarios")
-public class Usuario implements UserDetails {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,68 +37,24 @@ public class Usuario implements UserDetails {
     @JsonProperty(access = Access.WRITE_ONLY)
     private String senha;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    @JoinTable(
+            name = "tb_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Role> role;
 
     @OneToMany(mappedBy = "usuario")
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Tarefa> tarefa = new ArrayList<Tarefa>();
 
-    public Usuario (String nome, String senha, String login, RoleEnum role) {
-        this.nome = nome;
-        this.senha = senha;
-        this.login = login;
-        this.role = role;
-    }
-
-    public Usuario (Long id, String nome, String login, RoleEnum role) {
-        this.id = id;
-        this.nome = nome;
-        this.login = login;
-        this.role = role;
-    }
-
-    public Usuario (Long id){
+    public Usuario(Long id){
         this.id = id;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean LoginCorreto(AutenticacaoRequest authRequest, BCryptPasswordEncoder passwordEncoder) {
+       return passwordEncoder.matches(authRequest.senha(), this.senha);
     }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.login;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == RoleEnum.ADMIN){
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
 }

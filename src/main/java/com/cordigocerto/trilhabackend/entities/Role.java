@@ -1,35 +1,36 @@
 package com.cordigocerto.trilhabackend.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "tb_tarefas")
-public class Tarefa {
+@Table(name = "tb_roles")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tarefaId;
+    private Long role_id;
 
-    private String tarefaDescricao;
+    @Column(name = "nome")
+    private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @Getter
+    public enum Values{
+        ADMIN (1L),
+        USER(2L);
 
+        long roleId;
 
-
-
-
-
-
-
+        Values(long roleId){
+            this.roleId = roleId;
+        }
+    }
 }

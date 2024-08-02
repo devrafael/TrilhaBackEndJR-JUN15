@@ -7,12 +7,15 @@ import com.cordigocerto.trilhabackend.services.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 @RestController
 @RequestMapping("/usuarios")
@@ -22,6 +25,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/admin")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<UsuarioResponse>> buscarTodosUsuarios(){
         List<Usuario> listaUsuarios = usuarioService.buscarUsuarios();
         List<UsuarioResponse> listaUsuarioResponses = new ArrayList<>();
@@ -40,22 +44,34 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id){
         Usuario usuario = usuarioService.buscarUsuario(id);
         usuarioService.deletarUsuario(usuario.getId());
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/admin")
+    @Transactional
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ResponseEntity<Void> criarUsuarioAdmin(@RequestBody UsuarioRequest usuarioRequest){
+        Usuario novoUsuario = usuarioService.criarUsuarioAdmin(usuarioRequest);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(novoUsuario.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
     @PostMapping()
     @Transactional
-    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioRequest usuarioRequest){
-        Usuario novoUsuario = usuarioService.criarUsuario(usuarioRequest);
+    public ResponseEntity<Void> criarUsuarioComum(@RequestBody UsuarioRequest usuarioRequest){
+        Usuario novoUsuario = usuarioService.criarUsuarioComum(usuarioRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(novoUsuario.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Void> atualizarUsuario(@RequestBody UsuarioRequest usuarioRequest, @PathVariable Long id){
         usuarioService.atualizarUsuario(usuarioRequest, id);
         return ResponseEntity.noContent().build();

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-public class AutenticaticacaoControler {
+public class AutenticacaoControler {
 
     @Autowired
     private JwtEncoder jwtEncoder;

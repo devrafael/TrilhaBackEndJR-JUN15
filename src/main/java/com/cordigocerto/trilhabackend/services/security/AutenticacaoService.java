@@ -1,72 +1,51 @@
 package com.cordigocerto.trilhabackend.services.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.cordigocerto.trilhabackend.controllers.dtos.requests.AutenticacaoRequest;
+import com.cordigocerto.trilhabackend.entities.Role;
 import com.cordigocerto.trilhabackend.entities.Usuario;
-import com.cordigocerto.trilhabackend.repositories.UsuarioRepository;
+import com.cordigocerto.trilhabackend.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class AutenticacaoService implements TokenService {
+public class AutenticacaoService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return usuarioRepository.findByLogin(login);
+    public JwtClaimsSet getToken(AutenticacaoRequest authRequest) {
+        Optional<Usuario> usuario = usuarioService.buscarPorLogin(authRequest);
+
+        return createToken(usuario.orElse(null));
     }
 
-    @Override
-    public String getToken(AutenticacaoRequest autenticacaoRequest) {
-
-        Usuario usuario = usuarioRepository.findByLogin(autenticacaoRequest.login());
-
-        return createToken(usuario);
-    }
-
-    public String createToken(Usuario usuario) {
+    public JwtClaimsSet createToken(Usuario usuario) {
 
         try {
+            var scopes = usuario.getRole()
+                    .stream()
+                    .map(Role::getNome)
+                    .collect(Collectors.joining(" "));
 
-            Instant now = Instant.now();
-            Algorithm algorithm = Algorithm.HMAC256("my-secret");
-            return JWT.create()
-                    .withIssuer("project-api")
-                    .withSubject(usuario.getLogin())
-                    .withExpiresAt(dateExpiration())
-                    .sign(algorithm);
+            return JwtClaimsSet.builder()
+                    .issuer("project-api")
+                    .subject(usuario.getId().toString())
+                    .issuedAt(Instant.now())
+                    .expiresAt(getDateExpirationToken())
+                    .claim("scope", scopes)
+                    .build();
 
         }catch (JWTCreationException e){
             throw new RuntimeException("Erro ao tentar gerar o token! " + e.getMessage());
         }
-    }
-
-    public String tokenValidation(String token){
-
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("my-secret");
-
-            return JWT.require(algorithm)
-                    .withIssuer("project-api")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-
-        }catch (JWTVerificationException e){
-            System.out.println("Erro na verificação do token: " + e.getMessage());
-        }
-        return "";
     }
 
     private Instant dateExpiration() {
@@ -76,4 +55,9 @@ public class AutenticacaoService implements TokenService {
     public Instant getDateExpirationToken(){
         return dateExpiration();
     }
+
+
+
+
+
 }

@@ -5,6 +5,7 @@ import com.cordigocerto.trilhabackend.entities.Tarefa;
 import com.cordigocerto.trilhabackend.repositories.TarefaRepository;
 import com.cordigocerto.trilhabackend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class TarefaService {
         return tarefas;
     }
 
-    public List<Tarefa> buscarTodasTarefasPorUsuario_Id(Long usuario_id){
+    public List<Tarefa> buscarTodasTarefasPorUsuario_Id(Long usuario_id) {
         if(usuarioService.buscarUsuario(usuario_id) == null){
             throw new ResourceNotFoundException("Usuario nao encontrado na base de dados! Id: " + usuario_id);
         }
@@ -37,13 +38,19 @@ public class TarefaService {
         return usuario.orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada na base de dados! Id: " + id));
     }
 
-    public void deletarUsuario(Tarefa tarefa) {
-        Tarefa usuario = buscarTarefa(tarefa.getTarefaId());
-        tarefaRepository.delete(usuario);
+    public void deletarTarefa(Tarefa tarefa, JwtAuthenticationToken token) {
+        Tarefa t = buscarTarefa(tarefa.getTarefaId());
+        tarefaRepository.delete(t);
     }
 
-    public Tarefa criarTarefa(TarefaRequest tarefaRequest) {
-        return tarefaRepository.save(new Tarefa(tarefaRequest.tarefaDescricao(), tarefaRequest.usuario_id()));
+    public Tarefa criarTarefa(TarefaRequest tarefaRequest, JwtAuthenticationToken token) {
+        var usuario = usuarioService.buscarUsuario(Long.valueOf(token.getName()));
+
+        var tarefa = new Tarefa();
+        tarefa.setUsuario(usuario);
+        tarefa.setTarefaDescricao(tarefaRequest.tarefaDescricao());
+
+        return tarefaRepository.save(tarefa);
     }
 
     public Tarefa atualizarTarefa(TarefaRequest tarefaRequest, Long id) {

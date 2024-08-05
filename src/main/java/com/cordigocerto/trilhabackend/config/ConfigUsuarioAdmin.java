@@ -34,7 +34,7 @@ public class ConfigUsuarioAdmin implements CommandLineRunner {
         usuarioAdmin.ifPresentOrElse(
                 (usuario) -> {
                     System.out.println("admin ja existe!");
-                    },
+                },
                 () -> {
                     var usuario = new Usuario();
                     usuario.setNome("rafael");

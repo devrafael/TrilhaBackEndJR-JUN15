@@ -50,6 +50,8 @@ public class UsuarioService {
 
     public void deletarUsuario(Long id) {
         Usuario u = buscarUsuario(id);
+
+
         usuarioRepository.delete(u);
     }
 

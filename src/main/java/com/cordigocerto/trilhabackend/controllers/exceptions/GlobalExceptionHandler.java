@@ -1,6 +1,7 @@
 package com.cordigocerto.trilhabackend.controllers.exceptions;
 
 
+import com.cordigocerto.trilhabackend.services.exceptions.IncorrectCredentialsException;
 import com.cordigocerto.trilhabackend.services.exceptions.EmptyCredentialsException;
 import com.cordigocerto.trilhabackend.services.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -77,6 +78,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         pb.setDetail("Não foi possivel atualizar! Alguma credencial pode estar vazia.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pb);
     }
+
+    @ExceptionHandler(IncorrectCredentialsException.class)
+    protected ResponseEntity<Object> handleIncorrectCredentialsException(IncorrectCredentialsException ex) {
+        ProblemDetail pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pb.setDetail(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pb);
+    }
+
+
 
 
 

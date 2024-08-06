@@ -45,7 +45,6 @@ public class UsuarioService {
         var usuario = usuarioRepository.findByLogin(authRequest.login());
 
         if (usuario.isEmpty() || !(usuario.get().LoginCorreto(authRequest, passwordEncoder))) {
-            System.out.println("exception lançada");
             throw new IncorrectCredentialsException("Credenciais incorretas! Favor verificar os dados de login.");
         }
         return usuario;

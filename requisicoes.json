@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "9cff3667-4c87-4407-9be0-f453b41cae53",
+		"name": "TrilhaBackEnd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28449424"
+	},
+	"item": [
+		{
+			"name": "Usuarios Admin",
+			"item": [
+				{
+					"name": "BUSCAR TODOS USUARIOS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios/admin",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAR USUARIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios/1",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CRIAR USUARIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios/admin",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ATUALIZAR USUARIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios/2",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETAR USUARIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios/2",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tarefas",
+			"item": [
+				{
+					"name": "BUSCAR TODAS TAREFAS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas/admin",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAR TAREFA ESPECIFICA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas/3",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAR TAREFAS DE USUARIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas/usuarios/2",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas",
+								"usuarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CRIAR TAREFA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ATUALIZANDO DESCRIÇÃO DAS TAREFAS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas/3",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETAR TAREFA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/tarefas/3",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"tarefas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario Comum",
+			"item": [
+				{
+					"name": "CRIAR USUARIO COMUM",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/usuarios",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "AUTENTICAÇÃO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"admin@gmail.com\",\r\n    \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trilhabackendjr-jun15-usip.onrender.com/auth",
+							"protocol": "https",
+							"host": [
+								"trilhabackendjr-jun15-usip",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

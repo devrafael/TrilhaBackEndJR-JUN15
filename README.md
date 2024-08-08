@@ -151,7 +151,7 @@ OBS.: Caso a url presente em cada um dos métodos não estiver funcionando, ser�
 ## Autenticação
 Descrição: Requisição para realizar autenticação de um usuário previamente cadastrado.
 
-- Método: GET
+- Método: POST
 - URL: https://trilhabackendjr-jun15-usip.onrender.com/auth
 
 ![autenticacao](/assets/autenticacao/autenticacao.png)
